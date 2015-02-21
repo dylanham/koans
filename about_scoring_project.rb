@@ -28,10 +28,28 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # More scoring examples are given in the tests below:
 #
 # Your goal is to write the score method.
-
 def score(dice)
-  # You need to write this method
+  score = 0
+  totals = [0]*7
+
+  dice.map {|i| totals[i]+=1}
+  # add up the sets.
+  for i in (1..6)
+    if totals[i] >= 3
+      if i == 1
+        score += 1000
+      else
+        score += 100*i
+      end
+      totals[i] -= 3
+    end
+  end
+
+  score += (totals[1]*100+totals[5]*50)
+
+  return score
 end
+
 
 class AboutScoringProject < Neo::Koan
   def test_score_of_an_empty_list_is_zero
